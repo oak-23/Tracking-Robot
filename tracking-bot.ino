@@ -193,6 +193,8 @@ void checkTurn(){
       case 10:
         turn(BACK);
         break;
+      default:
+        break;
     }
   }
 }
