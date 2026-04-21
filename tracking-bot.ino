@@ -132,7 +132,15 @@ void turn(int direction) {
 void checkTurn(){ 
   if (run == true){
     switch(turnCounter){
-      case 
+      case 1:
+        turn(LEFT);
+        break;
+      case 2:
+        turn(RIGHT);
+        break;
+      case 3:
+        turn(LEFT);
+        break;
     }
   }
   return
