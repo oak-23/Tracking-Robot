@@ -13,6 +13,8 @@
 
 void checkTurn();
 
+const int pinRR_Sensor = A7;
+const int pinLL_Sensor = A6;
 const int pinL_Sensor = A5;      //pin A5: left sensor 
 const int pinB_Sensor = A4;      //pin A4: bumper sensor
 const int pinR_Sensor = A3;      //pin A3: right sensor 
@@ -34,6 +36,8 @@ int countBumper = 0;   // bumper sensor not triggered yet
 // Direction
 const int LEFT = 0;
 const int RIGHT = 1;
+const int SPIN = 2;
+const int BACK = 3;
 
 int turnCounter = 0;
 bool run = 0; 
@@ -45,6 +49,8 @@ void setup ()
   pinMode(pinB_Sensor, INPUT);
   pinMode(pinL_Sensor, INPUT);
   pinMode(pinR_Sensor, INPUT);
+  pinMode(pinLL_Sensor, INPUT);
+  pinMode(pinRR_Sensor, INPUT);
   
   pinMode(pinL_DIR, OUTPUT);
   pinMode(pinR_DIR, OUTPUT);
@@ -67,12 +73,13 @@ void loop() {
   bumperSensor = digitalRead(pinB_Sensor);
   leftSensor = digitalRead(pinL_Sensor);
   rightSensor = digitalRead(pinR_Sensor);
+  LL = digitalRead(pinLL_Sensor);
+  RR = digitalRead(pinRR_Sensor);
   
   // car stops at the start position when bumper sensor no trigger
   if ( bumperSensor && countBumper == 0 ) {
     analogWrite(pinL_PWM, 0);
     analogWrite(pinR_PWM, 0);
- 
   }
 
   // bumper sensor is triggered at the start position for the 1st time
@@ -88,7 +95,7 @@ void loop() {
   // car is tracking on the white line
   else if ( bumperSensor && countBumper == 1) 
   { 
-    if ( !leftSensor && !rightSensor ) {
+    if ( !leftSensor && !rightSensor && !LL  && !RR) {
         analogWrite(pinL_PWM, 200);
         analogWrite(pinR_PWM, 200);
         digitalWrite(pinL_DIR, 0);
@@ -126,10 +133,6 @@ void turn(int direction) {
   analogWrite(pinR_PWM, 100);
   digitalWrite(pinL_DIR, direction);
   digitalWrite(pinR_DIR, !direction); 
-   analogWrite(pinL_PWM, 200);
-  analogWrite(pinR_PWM, 200);
-  digitalWrite(pinL_DIR, 1);
-  digitalWrite(pinR_DIR, 1); 
   delay(350);     //to let the car turn with no miscount 
   run = false;
 }
@@ -145,6 +148,27 @@ void checkTurn(){
         break;
       case 3:
         turn(LEFT);
+        break;
+      case 4:
+        turn(SPIN);
+        break;
+      case 5:
+        turn(LEFT);
+        break;
+      case 6:
+        turn(RIGHT);
+        break;
+      case 7:
+        turn(RIGHT);
+        break;
+      case 8:
+        turn(LEFT);
+        break;
+      case 9:
+        turn(RIGHT);
+        break;
+      case 10:
+        turn(BACK);
         break;
     }
   }
