@@ -122,8 +122,8 @@ void loop() {
 }
 
 void turn(int direction) {
-  analogWrite(pinL_PWM, 200);
-  analogWrite(pinR_PWM, 200);
+  analogWrite(pinL_PWM, 100);
+  analogWrite(pinR_PWM, 100);
   digitalWrite(pinL_DIR, direction);
   digitalWrite(pinR_DIR, !direction); 
   delay(350);     //to let the car turn with no miscount 
