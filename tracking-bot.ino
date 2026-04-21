@@ -11,6 +11,8 @@
 
 // assign meaningful names to those pins that will be used
 
+void checkTurn();
+
 const int pinL_Sensor = A5;      //pin A5: left sensor 
 const int pinB_Sensor = A4;      //pin A4: bumper sensor
 const int pinR_Sensor = A3;      //pin A3: right sensor 
@@ -29,6 +31,8 @@ int rightSensor = 1;   // not sensing white
 
 int countBumper = 0;   // bumper sensor not triggered yet
 
+int turnCounter = 0;
+bool run = 0; 
 // the setup function runs once when you press reset or power the board
 
 void setup ()
@@ -84,7 +88,9 @@ void loop() {
         analogWrite(pinL_PWM, 200);
         analogWrite(pinR_PWM, 200);
         digitalWrite(pinL_DIR, 0);
-        digitalWrite(pinR_DIR, 1); 
+        digitalWrite(pinR_DIR, 1);
+        turnCounter++;
+        run = true; 
       }
     
     if ( !leftSensor && rightSensor ) {
@@ -112,4 +118,13 @@ void loop() {
 
 void turnleft() {
   
+}
+
+void checkTurn(){ 
+  if (run == true){
+    switch(turnCounter){
+      case 
+    }
+  }
+  return
 }
