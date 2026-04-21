@@ -29,6 +29,10 @@ int rightSensor = 1;   // not sensing white
 
 int countBumper = 0;   // bumper sensor not triggered yet
 
+// Direction
+const int LEFT = 0;
+const int RIGHT = 1;
+
 // the setup function runs once when you press reset or power the board
 
 void setup ()
@@ -110,6 +114,10 @@ void loop() {
   }
 }
 
-void turnleft() {
-  
+void turn(int direction) {
+  analogWrite(pinL_PWM, 200);
+  analogWrite(pinR_PWM, 200);
+  digitalWrite(pinL_DIR, direction);
+  digitalWrite(pinR_DIR, !direction); 
+  dely(350);     //to let the car turn with no miscount 
 }
