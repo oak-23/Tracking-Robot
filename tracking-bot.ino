@@ -126,7 +126,7 @@ void turn(int direction) {
   digitalWrite(pinL_DIR, direction);
   digitalWrite(pinR_DIR, !direction); 
   delay(350);     //to let the car turn with no miscount 
-  run = false;g
+  run = false;
 }
 
 void checkTurn(){ 
