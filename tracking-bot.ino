@@ -129,11 +129,34 @@ void loop() {
 }
 
 void turn(int direction) {
-  analogWrite(pinL_PWM, 100);
-  analogWrite(pinR_PWM, 100);
-  digitalWrite(pinL_DIR, direction);
-  digitalWrite(pinR_DIR, !direction); 
-  delay(350);     //to let the car turn with no miscount 
+  if (direction == LEFT || direction == RIGHT) {
+    analogWrite(pinL_PWM, 100);
+    analogWrite(pinR_PWM, 100);
+    digitalWrite(pinL_DIR, direction);
+    digitalWrite(pinR_DIR, !direction); 
+    delay(100);  
+    analogWrite(pinL_PWM, 100);
+    analogWrite(pinR_PWM, 100);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 1); 
+    delay(100);  
+  }
+  else if (direction == SPIN) {
+    analogWrite(pinL_PWM, 200);
+    analogWrite(pinR_PWM, 200);
+    digitalWrite(pinL_DIR, 0);
+    digitalWrite(pinR_DIR, 1);
+    delay(1400);
+  }
+  else {
+    analogWrite(pinL_PWM, 200);
+    analogWrite(pinR_PWM, 200);
+    digitalWrite(pinL_DIR, 0);
+    digitalWrite(pinR_DIR, 0);
+    delay(200);
+    analogWrite(pinL_PWM, 0);
+    analogWrite(pinR_PWM, 0);
+  }
   run = false;
 }
 
