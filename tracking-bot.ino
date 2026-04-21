@@ -94,7 +94,8 @@ void loop() {
         digitalWrite(pinL_DIR, 0);
         digitalWrite(pinR_DIR, 1);
         turnCounter++;
-        run = true; 
+        run = true;
+        checkTurn(); 
       }
     
     if ( !leftSensor && rightSensor ) {
