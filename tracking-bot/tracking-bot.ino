@@ -36,6 +36,8 @@ int countBumper = 0;   // bumper sensor not triggered yet
 // Direction
 const int LEFT = 0;
 const int RIGHT = 1;
+const int SPIN = 2;
+const int BACK = 3;
 
 int turnCounter = 0;
 bool run = 0; 
@@ -71,6 +73,8 @@ void loop() {
   bumperSensor = digitalRead(pinB_Sensor);
   leftSensor = digitalRead(pinL_Sensor);
   rightSensor = digitalRead(pinR_Sensor);
+  LL = digitalRead(pinLL_Sensor);
+  RR = digitalRead(pinRR_Sensor);
   
   // car stops at the start position when bumper sensor no trigger
   if ( bumperSensor && countBumper == 0 ) {
@@ -91,7 +95,7 @@ void loop() {
   // car is tracking on the white line
   else if ( bumperSensor && countBumper == 1) 
   { 
-    if ( !leftSensor && !rightSensor ) {
+    if ( !leftSensor && !rightSensor && !LL  && !RR) {
         analogWrite(pinL_PWM, 200);
         analogWrite(pinR_PWM, 200);
         digitalWrite(pinL_DIR, 0);
@@ -144,6 +148,27 @@ void checkTurn(){
         break;
       case 3:
         turn(LEFT);
+        break;
+      case 4:
+        turn(SPIN);
+        break;
+      case 5:
+        turn(LEFT);
+        break;
+      case 6:
+        turn(RIGHT);
+        break;
+      case 7:
+        turn(RIGHT);
+        break;
+      case 8:
+        turn(LEFT);
+        break;
+      case 9:
+        turn(RIGHT);
+        break;
+      case 10:
+        turn(BACK);
         break;
     }
   }
