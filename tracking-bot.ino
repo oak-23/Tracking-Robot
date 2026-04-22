@@ -13,8 +13,8 @@
 
 void checkTurn();
 
-const int pinRR_Sensor = A7;
-const int pinLL_Sensor = A6;
+const int pinRR_Sensor = A1;
+const int pinLL_Sensor = A0;
 const int pinL_Sensor = A5;      //pin A5: left sensor 
 const int pinB_Sensor = A4;      //pin A4: bumper sensor
 const int pinR_Sensor = A3;      //pin A3: right sensor 
@@ -37,7 +37,7 @@ int countBumper = 0;   // bumper sensor not triggered yet
 const int LEFT = 0;
 const int RIGHT = 1;
 const int SPIN = 2;
-const int BACK = 3;
+const int STOP = 3;
 
 int turnCounter = 0;
 bool run = 0; 
@@ -77,7 +77,7 @@ void loop() {
   RR = digitalRead(pinRR_Sensor);
   
   // car stops at the start position when bumper sensor no trigger
-  if ( bumperSensor && countBumper == 0 ) {
+  if ( bumperSensor && (countBumper == 0 || countBumper == 2)) {
     analogWrite(pinL_PWM, 0);
     analogWrite(pinR_PWM, 0);
   }
@@ -86,7 +86,7 @@ void loop() {
   else if ( !bumperSensor && countBumper == 0) {
     analogWrite(pinL_PWM, 200);
     analogWrite(pinR_PWM, 200);
-   digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
     countBumper = countBumper + 1;
     delay(350);     //to let the car leave the start position with no miscount
@@ -126,6 +126,19 @@ void loop() {
         digitalWrite(pinR_DIR, 1);  
       }
   }
+  else if ( !bumperSensor && countBumper == 1) {
+    countBumper = countBumper + 1;
+  }
+  else if (countBumper == 2) {
+    analogWrite(pinL_PWM, 200);
+    analogWrite(pinR_PWM, 200);
+    digitalWrite(pinL_DIR, 0);
+    digitalWrite(pinR_DIR, 0);
+  }
+  else if (countBumper == 3) {
+    analogWrite(pinL_PWM, 0);
+    analogWrite(pinR_PWM, 0);
+  }
 }
 
 void turn(int direction) {
@@ -149,13 +162,7 @@ void turn(int direction) {
     delay(1400);
   }
   else {
-    analogWrite(pinL_PWM, 200);
-    analogWrite(pinR_PWM, 200);
-    digitalWrite(pinL_DIR, 0);
-    digitalWrite(pinR_DIR, 0);
-    delay(200);
-    analogWrite(pinL_PWM, 0);
-    analogWrite(pinR_PWM, 0);
+    countBumper = countBumper + 1;
   }
   run = false;
 }
@@ -191,7 +198,7 @@ void checkTurn(){
         turn(RIGHT);
         break;
       case 10:
-        turn(BACK);
+        turn(STOP);
         break;
       default:
         break;
