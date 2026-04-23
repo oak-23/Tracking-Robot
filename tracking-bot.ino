@@ -99,11 +99,6 @@ void loop() {
   // car is tracking on the white line
   else if ( bumperSensor && countBumper == 1) 
   { 
-    if (!leftSensor && !rightSensor && !LL && (turnCounter == 7 || turnCounter == 9)) {
-        turnCounter++;
-        run = true;
-        checkTurn(); 
-    }
     if ( !leftSensor && !rightSensor) {
         analogWrite(pinL_PWM, 200);
         analogWrite(pinR_PWM, 200);
