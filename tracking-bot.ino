@@ -115,46 +115,44 @@ void loop() {
       }
    
     if ( !leftSensor && rightSensor ) {
-      if(turnCounter == 5) {
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
-        digitalWrite(pinL_DIR, 0);
-        digitalWrite(pinR_DIR, 1); 
-        delay(400);  
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
-        digitalWrite(pinL_DIR, 1);
-        digitalWrite(pinR_DIR, 1); 
-        delay(350); 
-      }
-      else {
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
-        digitalWrite(pinL_DIR, 0);
-        digitalWrite(pinR_DIR, 1); 
-      } 
+        if (LL) {
+          analogWrite(pinL_PWM, 200);
+          analogWrite(pinR_PWM, 200);
+          digitalWrite(pinL_DIR, 0);
+          digitalWrite(pinR_DIR, 1); 
+          delay(450);
+          analogWrite(pinL_PWM, 200);
+          analogWrite(pinR_PWM, 200);
+          digitalWrite(pinL_DIR, 1);
+          digitalWrite(pinR_DIR, 1); 
+          delay(100);
+        } else {
+          analogWrite(pinL_PWM, 200);
+          analogWrite(pinR_PWM, 200);
+          digitalWrite(pinL_DIR, 0);
+          digitalWrite(pinR_DIR, 1); 
+        }
     }
     
     if ( leftSensor && !rightSensor ) {
-        if(turnCounter == 5) {
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
-        digitalWrite(pinL_DIR, 1);
-        digitalWrite(pinR_DIR, 0); 
-        delay(400);  
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
-        digitalWrite(pinL_DIR, 1);
-        digitalWrite(pinR_DIR, 1); 
-        delay(350); 
-      }
-      else {
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
-        digitalWrite(pinL_DIR, 1);
-        digitalWrite(pinR_DIR, 0); 
-      }
-      }
+        if (LL) {
+          analogWrite(pinL_PWM, 200);
+          analogWrite(pinR_PWM, 200);
+          digitalWrite(pinL_DIR, 1);
+          digitalWrite(pinR_DIR, 0); 
+          delay(450);
+          analogWrite(pinL_PWM, 200);
+          analogWrite(pinR_PWM, 200);
+          digitalWrite(pinL_DIR, 1);
+          digitalWrite(pinR_DIR, 1); 
+          delay(100);
+        } else {
+          analogWrite(pinL_PWM, 200);
+          analogWrite(pinR_PWM, 200);
+          digitalWrite(pinL_DIR, 1);
+          digitalWrite(pinR_DIR, 0); 
+        }
+    }
     
     if ( leftSensor && rightSensor ) {
       analogWrite(pinL_PWM, 200);
