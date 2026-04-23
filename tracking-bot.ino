@@ -253,15 +253,6 @@ void checkTurn(){
         break;
       case 5:
         turn(LEFTB);
-        // turn(LEFTB);
-        // forward(150, 100);
-        // turn(RIGHTB);
-        // turn(RIGHTB);
-        // forward(150,100);
-        // turn(LEFTB);
-        // turn(LEFTB);
-        // turn(RIGHTB);
-        // turn(RIGHTB);
         break;
       case 6:
         turn(RIGHT);
