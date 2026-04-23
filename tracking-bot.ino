@@ -40,6 +40,8 @@ const int LEFT = 0;
 const int RIGHT = 1;
 const int SPIN = 2;
 const int STOP = 3;
+const int LEFTB = 4;
+const int RIGHTB = 5;
 
 int turnCounter = 0;
 bool run = 0; 
@@ -102,7 +104,7 @@ void loop() {
         run = true;
         checkTurn(); 
     }
-    if ( !leftSensor && !rightSensor && !LL  && !RR) {
+    if ( !leftSensor && !rightSensor) {
         analogWrite(pinL_PWM, 200);
         analogWrite(pinR_PWM, 200);
         digitalWrite(pinL_DIR, 0);
@@ -111,27 +113,56 @@ void loop() {
         run = true;
         checkTurn(); 
       }
-    
+   
     if ( !leftSensor && rightSensor ) {
+      if(turnCounter == 5) {
         analogWrite(pinL_PWM, 200);
         analogWrite(pinR_PWM, 200);
         digitalWrite(pinL_DIR, 0);
-        digitalWrite(pinR_DIR, 1);  
-      }
-    
-    if ( leftSensor && !rightSensor ) {
+        digitalWrite(pinR_DIR, 1); 
+        delay(400);  
         analogWrite(pinL_PWM, 200);
         analogWrite(pinR_PWM, 200);
         digitalWrite(pinL_DIR, 1);
-        digitalWrite(pinR_DIR, 0);  
+        digitalWrite(pinR_DIR, 1); 
+        delay(350); 
+      }
+      else {
+        analogWrite(pinL_PWM, 200);
+        analogWrite(pinR_PWM, 200);
+        digitalWrite(pinL_DIR, 0);
+        digitalWrite(pinR_DIR, 1); 
+      } 
+    }
+    
+    if ( leftSensor && !rightSensor ) {
+        if(turnCounter == 5) {
+        analogWrite(pinL_PWM, 200);
+        analogWrite(pinR_PWM, 200);
+        digitalWrite(pinL_DIR, 1);
+        digitalWrite(pinR_DIR, 0); 
+        delay(400);  
+        analogWrite(pinL_PWM, 200);
+        analogWrite(pinR_PWM, 200);
+        digitalWrite(pinL_DIR, 1);
+        digitalWrite(pinR_DIR, 1); 
+        delay(350); 
+      }
+      else {
+        analogWrite(pinL_PWM, 200);
+        analogWrite(pinR_PWM, 200);
+        digitalWrite(pinL_DIR, 1);
+        digitalWrite(pinR_DIR, 0); 
+      }
       }
     
     if ( leftSensor && rightSensor ) {
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
-        digitalWrite(pinL_DIR, 1);
-        digitalWrite(pinR_DIR, 1);  
-      }
+      analogWrite(pinL_PWM, 200);
+      analogWrite(pinR_PWM, 200);
+      digitalWrite(pinL_DIR, 1);
+      digitalWrite(pinR_DIR, 1);
+      
+    }
   }
   else if ( !bumperSensor && countBumper == 1) {
     countBumper = countBumper + 1;
@@ -146,6 +177,7 @@ void loop() {
     analogWrite(pinL_PWM, 0);
     analogWrite(pinR_PWM, 0);
   }
+  delay(1);
 }
 
 void turn(int direction) {
@@ -154,9 +186,9 @@ void turn(int direction) {
     analogWrite(pinR_PWM, 100);
     digitalWrite(pinL_DIR, direction);
     digitalWrite(pinR_DIR, !direction); 
-    delay(100);  
-    analogWrite(pinL_PWM, 100);
-    analogWrite(pinR_PWM, 100);
+    delay(200);  
+    analogWrite(pinL_PWM, 200);
+    analogWrite(pinR_PWM, 200);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
     delay(100);  
@@ -167,11 +199,46 @@ void turn(int direction) {
     digitalWrite(pinL_DIR, 0);
     digitalWrite(pinR_DIR, 1);
     delay(1400);
+    analogWrite(pinL_PWM, 200);
+    analogWrite(pinR_PWM, 200);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 1); 
+    delay(50);
+  }else if (direction == LEFTB ) {
+    analogWrite(pinL_PWM, 200);
+    analogWrite(pinR_PWM, 200);
+    digitalWrite(pinL_DIR, 0);
+    digitalWrite(pinR_DIR, 1); 
+    delay(350);  
+    analogWrite(pinL_PWM, 200);
+    analogWrite(pinR_PWM, 200);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 1); 
+    delay(350);  
+  }else if (direction == RIGHTB ) {
+    analogWrite(pinL_PWM, 200);
+    analogWrite(pinR_PWM, 200);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 0); 
+    delay(350);  
+    analogWrite(pinL_PWM, 200);
+    analogWrite(pinR_PWM, 200);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 1); 
+    delay(350);  
   }
   else {
     countBumper = countBumper + 1;
   }
   run = false;
+}
+
+void forward(int speed, int dt ){
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 1);
+    delay(dt);
 }
 
 void checkTurn(){ 
@@ -185,12 +252,23 @@ void checkTurn(){
         break;
       case 3:
         turn(LEFT);
+        turn(LEFT);
+
         break;
       case 4:
         turn(SPIN);
         break;
       case 5:
-        turn(LEFT);
+        turn(LEFTB);
+        // turn(LEFTB);
+        // forward(150, 100);
+        // turn(RIGHTB);
+        // turn(RIGHTB);
+        // forward(150,100);
+        // turn(LEFTB);
+        // turn(LEFTB);
+        // turn(RIGHTB);
+        // turn(RIGHTB);
         break;
       case 6:
         turn(RIGHT);
