@@ -115,7 +115,7 @@ void loop() {
       }
    
     if ( !leftSensor && rightSensor ) {
-        if (RR) {
+        if (!LL) {
           analogWrite(pinL_PWM, 200);
           analogWrite(pinR_PWM, 200);
           digitalWrite(pinL_DIR, 0);
@@ -135,7 +135,7 @@ void loop() {
     }
     
     if ( leftSensor && !rightSensor ) {
-        if (LL) {
+        if (!RR) {
           analogWrite(pinL_PWM, 200);
           analogWrite(pinR_PWM, 200);
           digitalWrite(pinL_DIR, 1);
