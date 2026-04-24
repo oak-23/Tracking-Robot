@@ -245,8 +245,6 @@ void checkTurn(){
         break;
       case 3:
         turn(LEFT);
-        turn(LEFT);
-
         break;
       case 4:
         turn(SPIN);
