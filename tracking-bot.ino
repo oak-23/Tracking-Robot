@@ -43,6 +43,9 @@ const int STOP = 3;
 const int LEFTB = 4;
 const int RIGHTB = 5;
 
+// Speed
+int speed = 0;
+
 int turnCounter = 0;
 bool run = 0; 
 // the setup function runs once when you press reset or power the board
