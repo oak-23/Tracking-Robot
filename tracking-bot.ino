@@ -45,6 +45,8 @@ const int RIGHTB = 5;
 
 // Speed
 int speed = 255;
+int time = 200;
+int time_1 = 100;
 
 int turnCounter = 0;
 bool run = 0; 
@@ -182,12 +184,12 @@ void turn(int direction) {
     analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, direction);
     digitalWrite(pinR_DIR, !direction); 
-    delay(200);  
+    delay(time);  
     analogWrite(pinL_PWM, speed);
     analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
-    delay(100);  
+    delay(time_1);  
   }
   else if (direction == SPIN) {
     analogWrite(pinL_PWM, speed);
@@ -245,6 +247,7 @@ void checkTurn(){
         break;
       case 2:
         turn(RIGHT);
+        speed = 100;
         break;
       case 3:
         turn(LEFT);
