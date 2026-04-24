@@ -44,7 +44,7 @@ const int LEFTB = 4;
 const int RIGHTB = 5;
 
 // Speed
-int speed = 0;
+int speed = 255;
 
 int turnCounter = 0;
 bool run = 0; 
