@@ -91,8 +91,8 @@ void loop() {
 
   // bumper sensor is triggered at the start position for the 1st time
   else if ( !bumperSensor && countBumper == 0) {
-    analogWrite(pinL_PWM, 200);
-    analogWrite(pinR_PWM, 200);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
     countBumper = countBumper + 1;
@@ -103,8 +103,8 @@ void loop() {
   else if ( bumperSensor && countBumper == 1) 
   { 
     if ( !leftSensor && !rightSensor) {
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
+        analogWrite(pinL_PWM, speed);
+        analogWrite(pinR_PWM, speed);
         digitalWrite(pinL_DIR, 0);
         digitalWrite(pinR_DIR, 1);
         turnCounter++;
@@ -114,19 +114,19 @@ void loop() {
    
     if ( !leftSensor && rightSensor ) {
         if (!LL) {
-          analogWrite(pinL_PWM, 200);
-          analogWrite(pinR_PWM, 200);
+          analogWrite(pinL_PWM, speed);
+          analogWrite(pinR_PWM, speed);
           digitalWrite(pinL_DIR, 0);
           digitalWrite(pinR_DIR, 1); 
           delay(450);
-          analogWrite(pinL_PWM, 200);
-          analogWrite(pinR_PWM, 200);
+          analogWrite(pinL_PWM, speed);
+          analogWrite(pinR_PWM, speed);
           digitalWrite(pinL_DIR, 1);
           digitalWrite(pinR_DIR, 1); 
           delay(100);
         } else {
-          analogWrite(pinL_PWM, 200);
-          analogWrite(pinR_PWM, 200);
+          analogWrite(pinL_PWM, speed);
+          analogWrite(pinR_PWM, speed);
           digitalWrite(pinL_DIR, 0);
           digitalWrite(pinR_DIR, 1); 
         }
@@ -134,27 +134,27 @@ void loop() {
     
     if ( leftSensor && !rightSensor ) {
         if (!RR) {
-          analogWrite(pinL_PWM, 200);
-          analogWrite(pinR_PWM, 200);
+          analogWrite(pinL_PWM, speed);
+          analogWrite(pinR_PWM, speed);
           digitalWrite(pinL_DIR, 1);
           digitalWrite(pinR_DIR, 0); 
           delay(450);
-          analogWrite(pinL_PWM, 200);
-          analogWrite(pinR_PWM, 200);
+          analogWrite(pinL_PWM, speed);
+          analogWrite(pinR_PWM, speed);
           digitalWrite(pinL_DIR, 1);
           digitalWrite(pinR_DIR, 1); 
           delay(100);
         } else {
-          analogWrite(pinL_PWM, 200);
-          analogWrite(pinR_PWM, 200);
+          analogWrite(pinL_PWM, speed);
+          analogWrite(pinR_PWM, speed);
           digitalWrite(pinL_DIR, 1);
           digitalWrite(pinR_DIR, 0); 
         }
     }
     
     if ( leftSensor && rightSensor ) {
-      analogWrite(pinL_PWM, 200);
-      analogWrite(pinR_PWM, 200);
+      analogWrite(pinL_PWM, speed);
+      analogWrite(pinR_PWM, speed);
       digitalWrite(pinL_DIR, 1);
       digitalWrite(pinR_DIR, 1);
       
@@ -164,8 +164,8 @@ void loop() {
     countBumper = countBumper + 1;
   }
   else if (countBumper == 2) {
-    analogWrite(pinL_PWM, 200);
-    analogWrite(pinR_PWM, 200);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 0);
     digitalWrite(pinR_DIR, 0);
   }
@@ -178,47 +178,47 @@ void loop() {
 
 void turn(int direction) {
   if (direction == LEFT || direction == RIGHT) {
-    analogWrite(pinL_PWM, 100);
-    analogWrite(pinR_PWM, 100);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, direction);
     digitalWrite(pinR_DIR, !direction); 
     delay(200);  
-    analogWrite(pinL_PWM, 200);
-    analogWrite(pinR_PWM, 200);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
     delay(100);  
   }
   else if (direction == SPIN) {
-    analogWrite(pinL_PWM, 200);
-    analogWrite(pinR_PWM, 200);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 0);
     digitalWrite(pinR_DIR, 1);
     delay(1400);
-    analogWrite(pinL_PWM, 200);
-    analogWrite(pinR_PWM, 200);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
     delay(50);
   }else if (direction == LEFTB ) {
-    analogWrite(pinL_PWM, 200);
-    analogWrite(pinR_PWM, 200);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 0);
     digitalWrite(pinR_DIR, 1); 
     delay(350);  
-    analogWrite(pinL_PWM, 200);
-    analogWrite(pinR_PWM, 200);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
     delay(350);  
   }else if (direction == RIGHTB ) {
-    analogWrite(pinL_PWM, 200);
-    analogWrite(pinR_PWM, 200);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 0); 
     delay(350);  
-    analogWrite(pinL_PWM, 200);
-    analogWrite(pinR_PWM, 200);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
     delay(350);  
