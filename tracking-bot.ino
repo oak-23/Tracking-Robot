@@ -25,6 +25,7 @@ const int pinL_DIR = 10;         //pin D10: left motor direction
 
 const int pinR_PWM = 11;         //pin D11: right motor speed
 const int pinR_DIR = 12;         //pin D12: right motor direction
+const int debugPin = 8;
 
 //define variables to be used in script
 
@@ -67,6 +68,8 @@ void setup ()
   pinMode(pinLL_Sensor, INPUT);
   pinMode(pinRR_Sensor, INPUT);
   
+  pinMode(debugPin, OUTPUT);
+
   pinMode(pinL_DIR, OUTPUT);
   pinMode(pinR_DIR, OUTPUT);
   
@@ -76,6 +79,7 @@ void setup ()
   // initialize output pins
   digitalWrite(pinL_DIR, HIGH);   //forward direction    
   digitalWrite(pinR_DIR, HIGH);   //forward direction
+  digitalWrite(debugPin, LOW);
   analogWrite(pinL_PWM, 0);       //stop at the start position 
   analogWrite(pinR_PWM, 0);       //stop at the start position 
 }
@@ -111,7 +115,7 @@ void loop() {
   // car is tracking on the white line
   else if ( bumperSensor && countBumper == 1) 
   { 
-    if (turnCounter >= 7 && turnCounter <= 9){
+    if (turnCounter >= 5 && turnCounter <= 7){
       if ( !leftSensor && rightSensor ) {
       analogWrite(pinL_PWM, speed);
       analogWrite(pinR_PWM, speed);
@@ -265,6 +269,7 @@ void checkTurn(){
       case 4:
         turn(LEFT);
         speed = 150;
+        digitalWrite(debugPin, HIGH);
         break;
       case 5:
         turn(SPIN);
