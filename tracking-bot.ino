@@ -11,10 +11,11 @@
 
 // assign meaningful names to those pins that will be used
 
-void checkTurn();
+const long TIMEOUT = 200.00;
 
-const int pinRR_Sensor = A7;
-const int pinLL_Sensor = A6;
+
+const int pinRR_Sensor = A1;
+const int pinLL_Sensor = A0;
 const int pinL_Sensor = A5;      //pin A5: left sensor 
 const int pinB_Sensor = A4;      //pin A4: bumper sensor
 const int pinR_Sensor = A3;      //pin A3: right sensor 
@@ -30,6 +31,8 @@ const int pinR_DIR = 12;         //pin D12: right motor direction
 int bumperSensor = 1;  // not sensing white
 int leftSensor = 1;    // not sensing white
 int rightSensor = 1;   // not sensing white
+int LL = 1;
+int RR = 1;
 
 int countBumper = 0;   // bumper sensor not triggered yet
 
@@ -37,11 +40,23 @@ int countBumper = 0;   // bumper sensor not triggered yet
 const int LEFT = 0;
 const int RIGHT = 1;
 const int SPIN = 2;
-const int BACK = 3;
+const int STOP = 3;
+const int LEFTB = 4;
+const int RIGHTB = 5;
+
+// Speed
+int speed = 150;
+int spin_speed = 200;
+int time = 100;
+int time_1 = 100;
 
 int turnCounter = 0;
 bool run = 0; 
 // the setup function runs once when you press reset or power the board
+
+
+//turn timeout
+long last_turn_time = 0;
 
 void setup ()
 {
@@ -77,16 +92,17 @@ void loop() {
   RR = digitalRead(pinRR_Sensor);
   
   // car stops at the start position when bumper sensor no trigger
-  if ( bumperSensor && countBumper == 0 ) {
+  if ( bumperSensor && (countBumper == 0 || countBumper == 2)) {
     analogWrite(pinL_PWM, 0);
     analogWrite(pinR_PWM, 0);
   }
 
   // bumper sensor is triggered at the start position for the 1st time
   else if ( !bumperSensor && countBumper == 0) {
-    analogWrite(pinL_PWM, 200);
-    analogWrite(pinR_PWM, 200);
-   digitalWrite(pinL_DIR, 1);
+    last_turn_time = millis();
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
+    digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
     countBumper = countBumper + 1;
     delay(350);     //to let the car leave the start position with no miscount
@@ -95,49 +111,118 @@ void loop() {
   // car is tracking on the white line
   else if ( bumperSensor && countBumper == 1) 
   { 
-    if ( !leftSensor && !rightSensor && !LL  && !RR) {
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
+    if ( !leftSensor && !rightSensor) {
+        analogWrite(pinL_PWM, speed);
+        analogWrite(pinR_PWM, speed);
         digitalWrite(pinL_DIR, 0);
         digitalWrite(pinR_DIR, 1);
-        turnCounter++;
         run = true;
         checkTurn(); 
       }
-    
+   
     if ( !leftSensor && rightSensor ) {
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
-        digitalWrite(pinL_DIR, 0);
-        digitalWrite(pinR_DIR, 1);  
-      }
+      analogWrite(pinL_PWM, speed);
+      analogWrite(pinR_PWM, speed);
+      digitalWrite(pinL_DIR, 0);
+      digitalWrite(pinR_DIR, 1); 
+    }
     
     if ( leftSensor && !rightSensor ) {
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
-        digitalWrite(pinL_DIR, 1);
-        digitalWrite(pinR_DIR, 0);  
-      }
+      analogWrite(pinL_PWM, speed);
+      analogWrite(pinR_PWM, speed);
+      digitalWrite(pinL_DIR, 1);
+      digitalWrite(pinR_DIR, 0); 
+    }
     
     if ( leftSensor && rightSensor ) {
-        analogWrite(pinL_PWM, 200);
-        analogWrite(pinR_PWM, 200);
-        digitalWrite(pinL_DIR, 1);
-        digitalWrite(pinR_DIR, 1);  
-      }
+      analogWrite(pinL_PWM, speed);
+      analogWrite(pinR_PWM, speed);
+      digitalWrite(pinL_DIR, 1);
+      digitalWrite(pinR_DIR, 1);
+    }
   }
+  else if ( !bumperSensor && countBumper == 1) {
+    countBumper = countBumper + 1;
+  }
+  else if (countBumper == 2) {
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
+    digitalWrite(pinL_DIR, 0);
+    digitalWrite(pinR_DIR, 0);
+  }
+  else if (countBumper == 3) {
+    analogWrite(pinL_PWM, 0);
+    analogWrite(pinR_PWM, 0);
+  }
+  delay(1);
 }
 
 void turn(int direction) {
-  analogWrite(pinL_PWM, 100);
-  analogWrite(pinR_PWM, 100);
-  digitalWrite(pinL_DIR, direction);
-  digitalWrite(pinR_DIR, !direction); 
-  delay(350);     //to let the car turn with no miscount 
+  if (direction == LEFT || direction == RIGHT) {
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
+    digitalWrite(pinL_DIR, direction);
+    digitalWrite(pinR_DIR, !direction); 
+    delay(time);  
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 1); 
+    delay(time_1);  
+  }
+  else if (direction == SPIN) {
+    analogWrite(pinL_PWM, spin_speed);
+    analogWrite(pinR_PWM, spin_speed);
+    digitalWrite(pinL_DIR, 0);
+    digitalWrite(pinR_DIR, 1);
+    delay(1100);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 1); 
+    delay(100);
+  }else if (direction == LEFTB ) {
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
+    digitalWrite(pinL_DIR, 0);
+    digitalWrite(pinR_DIR, 1); 
+    delay(350);  
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 1); 
+    delay(100);  
+  }else if (direction == RIGHTB ) {
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 0); 
+    delay(350);  
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 1); 
+    delay(100);  
+  }
+  else {
+    countBumper = countBumper + 1;
+  }
   run = false;
 }
 
+void forward(int speed, int dt ){
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
+    digitalWrite(pinL_DIR, 1);
+    digitalWrite(pinR_DIR, 1);
+    delay(dt);
+}
+
+
 void checkTurn(){ 
+  if ((millis() - last_turn_time) < TIMEOUT){
+    return;
+  }
   if (run == true){
     switch(turnCounter){
       case 1:
@@ -145,31 +230,49 @@ void checkTurn(){
         break;
       case 2:
         turn(RIGHT);
+        speed = 150;
         break;
       case 3:
         turn(LEFT);
+        speed = 150;
         break;
       case 4:
-        turn(SPIN);
+        turn(LEFT);
+        speed = 150;
         break;
       case 5:
-        turn(LEFT);
+        turn(SPIN);
         break;
       case 6:
-        turn(RIGHT);
+        turn(LEFTB);
+        speed = 75;
         break;
       case 7:
         turn(RIGHT);
         break;
       case 8:
-        turn(LEFT);
-        break;
-      case 9:
         turn(RIGHT);
         break;
+      case 9:
+        turn(LEFT);
+        break;
       case 10:
-        turn(BACK);
+        turn(LEFT);
+        break;
+      case 11:
+        turn(LEFT);
+        break;
+      case 12:
+        turn(LEFT);
+        break;
+      case 13:
+        turn(STOP);
+        break;
+      default:
         break;
     }
   }
+  last_turn_time = millis();
+  turnCounter++;
+  return;
 }
