@@ -16,6 +16,8 @@ const long TIMEOUT = 200.00;
 
 const int pinRR_Sensor = A1;
 const int pinLL_Sensor = A0;
+const int pinRR_Sensor = A1;
+const int pinLL_Sensor = A0;
 const int pinL_Sensor = A5;      //pin A5: left sensor 
 const int pinB_Sensor = A4;      //pin A4: bumper sensor
 const int pinR_Sensor = A3;      //pin A3: right sensor 
@@ -31,6 +33,8 @@ const int pinR_DIR = 12;         //pin D12: right motor direction
 int bumperSensor = 1;  // not sensing white
 int leftSensor = 1;    // not sensing white
 int rightSensor = 1;   // not sensing white
+int LL = 1;
+int RR = 1;
 int LL = 1;
 int RR = 1;
 
@@ -111,7 +115,33 @@ void loop() {
   // car is tracking on the white line
   else if ( bumperSensor && countBumper == 1) 
   { 
-    if ( !leftSensor && !rightSensor) {
+    if (turnCounter >= 5 && turnCounter <= 7){
+      if ( !leftSensor && rightSensor ) {
+      analogWrite(pinL_PWM, speed);
+      analogWrite(pinR_PWM, speed);
+      digitalWrite(pinL_DIR, 0);
+      digitalWrite(pinR_DIR, 1); 
+      delay(350);
+      }
+    
+      if ( leftSensor && !rightSensor ) {
+        analogWrite(pinL_PWM, speed);
+        analogWrite(pinR_PWM, speed);
+        digitalWrite(pinL_DIR, 1);
+        digitalWrite(pinR_DIR, 0); 
+        delay(350);
+      }
+      
+      if ( leftSensor && rightSensor ) {
+        analogWrite(pinL_PWM, speed);
+        analogWrite(pinR_PWM, speed);
+        digitalWrite(pinL_DIR, 1);
+        digitalWrite(pinR_DIR, 1);
+        delay(350);
+      }
+    }
+    else {
+      if ( !leftSensor && !rightSensor) {
         analogWrite(pinL_PWM, speed);
         analogWrite(pinR_PWM, speed);
         digitalWrite(pinL_DIR, 0);
@@ -119,26 +149,27 @@ void loop() {
         run = true;
         checkTurn(); 
       }
-   
-    if ( !leftSensor && rightSensor ) {
+
+      if ( !leftSensor && rightSensor ) {
       analogWrite(pinL_PWM, speed);
       analogWrite(pinR_PWM, speed);
       digitalWrite(pinL_DIR, 0);
       digitalWrite(pinR_DIR, 1); 
-    }
+      }
     
-    if ( leftSensor && !rightSensor ) {
-      analogWrite(pinL_PWM, speed);
-      analogWrite(pinR_PWM, speed);
-      digitalWrite(pinL_DIR, 1);
-      digitalWrite(pinR_DIR, 0); 
-    }
-    
-    if ( leftSensor && rightSensor ) {
-      analogWrite(pinL_PWM, speed);
-      analogWrite(pinR_PWM, speed);
-      digitalWrite(pinL_DIR, 1);
-      digitalWrite(pinR_DIR, 1);
+      if ( leftSensor && !rightSensor ) {
+        analogWrite(pinL_PWM, speed);
+        analogWrite(pinR_PWM, speed);
+        digitalWrite(pinL_DIR, 1);
+        digitalWrite(pinR_DIR, 0); 
+      }
+      
+      if ( leftSensor && rightSensor ) {
+        analogWrite(pinL_PWM, speed);
+        analogWrite(pinR_PWM, speed);
+        digitalWrite(pinL_DIR, 1);
+        digitalWrite(pinR_DIR, 1);
+      }
     }
   }
   else if ( !bumperSensor && countBumper == 1) {
@@ -171,16 +202,16 @@ void turn(int direction) {
     delay(time_1);  
   }
   else if (direction == SPIN) {
-    analogWrite(pinL_PWM, spin_speed);
-    analogWrite(pinR_PWM, spin_speed);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 0);
     digitalWrite(pinR_DIR, 1);
-    delay(1100);
+    delay(1400);
     analogWrite(pinL_PWM, speed);
     analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
-    delay(100);
+    delay(50);
   }else if (direction == LEFTB ) {
     analogWrite(pinL_PWM, speed);
     analogWrite(pinR_PWM, speed);
@@ -218,7 +249,6 @@ void forward(int speed, int dt ){
     delay(dt);
 }
 
-
 void checkTurn(){ 
   if ((millis() - last_turn_time) < TIMEOUT){
     return;
@@ -254,6 +284,7 @@ void checkTurn(){
         turn(RIGHT);
         break;
       case 9:
+        turn(LEFT);
         turn(LEFT);
         break;
       case 10:

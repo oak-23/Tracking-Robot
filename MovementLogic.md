@@ -1,2 +1,2 @@
-Whenever there's a junction, we increment the counter by 1
-Then, we call funcions of either turn left, right, or spin. 
+Whenever there's a junction, the turnCounter is incremented by 1. 
+Then, a specific function will be called depending on the best action to take.
