@@ -104,7 +104,33 @@ void loop() {
   // car is tracking on the white line
   else if ( bumperSensor && countBumper == 1) 
   { 
-    if ( !leftSensor && !rightSensor) {
+    if (turnCounter >= 5 && turnCounter <= 7){
+      if ( !leftSensor && rightSensor ) {
+      analogWrite(pinL_PWM, speed);
+      analogWrite(pinR_PWM, speed);
+      digitalWrite(pinL_DIR, 0);
+      digitalWrite(pinR_DIR, 1); 
+      delay(350);
+      }
+    
+      if ( leftSensor && !rightSensor ) {
+        analogWrite(pinL_PWM, speed);
+        analogWrite(pinR_PWM, speed);
+        digitalWrite(pinL_DIR, 1);
+        digitalWrite(pinR_DIR, 0); 
+        delay(350);
+      }
+      
+      if ( leftSensor && rightSensor ) {
+        analogWrite(pinL_PWM, speed);
+        analogWrite(pinR_PWM, speed);
+        digitalWrite(pinL_DIR, 1);
+        digitalWrite(pinR_DIR, 1);
+        delay(350);
+      }
+    }
+    else {
+      if ( !leftSensor && !rightSensor) {
         analogWrite(pinL_PWM, speed);
         analogWrite(pinR_PWM, speed);
         digitalWrite(pinL_DIR, 0);
@@ -113,26 +139,27 @@ void loop() {
         run = true;
         checkTurn(); 
       }
-   
-    if ( !leftSensor && rightSensor ) {
+
+      if ( !leftSensor && rightSensor ) {
       analogWrite(pinL_PWM, speed);
       analogWrite(pinR_PWM, speed);
       digitalWrite(pinL_DIR, 0);
       digitalWrite(pinR_DIR, 1); 
-    }
+      }
     
-    if ( leftSensor && !rightSensor ) {
-      analogWrite(pinL_PWM, speed);
-      analogWrite(pinR_PWM, speed);
-      digitalWrite(pinL_DIR, 1);
-      digitalWrite(pinR_DIR, 0); 
-    }
-    
-    if ( leftSensor && rightSensor ) {
-      analogWrite(pinL_PWM, speed);
-      analogWrite(pinR_PWM, speed);
-      digitalWrite(pinL_DIR, 1);
-      digitalWrite(pinR_DIR, 1);
+      if ( leftSensor && !rightSensor ) {
+        analogWrite(pinL_PWM, speed);
+        analogWrite(pinR_PWM, speed);
+        digitalWrite(pinL_DIR, 1);
+        digitalWrite(pinR_DIR, 0); 
+      }
+      
+      if ( leftSensor && rightSensor ) {
+        analogWrite(pinL_PWM, speed);
+        analogWrite(pinR_PWM, speed);
+        digitalWrite(pinL_DIR, 1);
+        digitalWrite(pinR_DIR, 1);
+      }
     }
   }
   else if ( !bumperSensor && countBumper == 1) {
