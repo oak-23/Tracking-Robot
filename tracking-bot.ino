@@ -16,8 +16,6 @@ const long TIMEOUT = 200.00;
 
 const int pinRR_Sensor = A1;
 const int pinLL_Sensor = A0;
-const int pinRR_Sensor = A1;
-const int pinLL_Sensor = A0;
 const int pinL_Sensor = A5;      //pin A5: left sensor 
 const int pinB_Sensor = A4;      //pin A4: bumper sensor
 const int pinR_Sensor = A3;      //pin A3: right sensor 
@@ -33,8 +31,6 @@ const int pinR_DIR = 12;         //pin D12: right motor direction
 int bumperSensor = 1;  // not sensing white
 int leftSensor = 1;    // not sensing white
 int rightSensor = 1;   // not sensing white
-int LL = 1;
-int RR = 1;
 int LL = 1;
 int RR = 1;
 
