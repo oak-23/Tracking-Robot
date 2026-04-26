@@ -11,8 +11,7 @@
 
 // assign meaningful names to those pins that will be used
 
-const long TIMEOUT = 200;
-
+void checkTurn();
 
 const int pinRR_Sensor = A1;
 const int pinLL_Sensor = A0;
@@ -45,18 +44,13 @@ const int LEFTB = 4;
 const int RIGHTB = 5;
 
 // Speed
-int speed = 150;
-int spin_speed = 200;
-int time = 100;
+int speed = 255;
+int time = 200;
 int time_1 = 100;
 
 int turnCounter = 0;
 bool run = 0; 
 // the setup function runs once when you press reset or power the board
-
-
-//turn timeout
-long last_turn_time = 0;
 
 void setup ()
 {
@@ -99,7 +93,6 @@ void loop() {
 
   // bumper sensor is triggered at the start position for the 1st time
   else if ( !bumperSensor && countBumper == 0) {
-    last_turn_time = millis();
     analogWrite(pinL_PWM, speed);
     analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
@@ -116,6 +109,7 @@ void loop() {
         analogWrite(pinR_PWM, speed);
         digitalWrite(pinL_DIR, 0);
         digitalWrite(pinR_DIR, 1);
+        turnCounter++;
         run = true;
         checkTurn(); 
       }
@@ -171,16 +165,16 @@ void turn(int direction) {
     delay(time_1);  
   }
   else if (direction == SPIN) {
-    analogWrite(pinL_PWM, spin_speed);
-    analogWrite(pinR_PWM, spin_speed);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 0);
     digitalWrite(pinR_DIR, 1);
-    delay(1100);
+    delay(1400);
     analogWrite(pinL_PWM, speed);
     analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
-    delay(100);
+    delay(50);
   }else if (direction == LEFTB ) {
     analogWrite(pinL_PWM, speed);
     analogWrite(pinR_PWM, speed);
@@ -218,11 +212,7 @@ void forward(int speed, int dt ){
     delay(dt);
 }
 
-
 void checkTurn(){ 
-  if ((millis() - last_turn_time) < TIMEOUT){
-    return;
-  }
   if (run == true){
     switch(turnCounter){
       case 1:
@@ -230,28 +220,27 @@ void checkTurn(){
         break;
       case 2:
         turn(RIGHT);
-        speed = 150;
+        speed = 100;
         break;
       case 3:
         turn(LEFT);
-        speed = 100;
+        speed = 200;
         break;
       case 4:
-        turn(LEFT);
-        speed = 150;
-        break;
-      case 5:
         turn(SPIN);
         break;
-      case 6:
+      case 5:
         turn(LEFTB);
-        speed = 75;
+        speed = 40;
+        break;
+      case 6:
+        turn(RIGHT);
         break;
       case 7:
         turn(RIGHT);
         break;
       case 8:
-        turn(RIGHT);
+        turn(LEFT);
         break;
       case 9:
         turn(LEFT);
@@ -263,16 +252,10 @@ void checkTurn(){
         turn(LEFT);
         break;
       case 12:
-        turn(LEFT);
-        break;
-      case 13:
         turn(STOP);
         break;
       default:
         break;
     }
   }
-  last_turn_time = millis();
-  turnCounter++;
-  return;
 }
