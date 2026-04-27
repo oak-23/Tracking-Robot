@@ -269,7 +269,6 @@ void checkTurn(){
         break;
       case 7:
         turn(LEFTB);
-        speed = 120;
         break;
       case 8:
         turn(RIGHTB);
@@ -293,11 +292,11 @@ void checkTurn(){
         break;
       case 14:
         turn(LEFTB);
+        speed = 170;
         break;
       case 15:
          // Curves after 90 degree turns
-        turn(RIGHTB);
-        speed = 170;
+        turn(RIGHT);
         break;
       case 16:
         turn(LEFT);
