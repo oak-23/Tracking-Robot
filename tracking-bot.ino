@@ -3,7 +3,7 @@
 
   To program the car tracking the white line on a dark mat
 
-  Group No. (number of your project box):  
+  Group No. (number of your project box): 001  
   Group Member 1 (name & SID): Kristian Alexander George Coke 21216937
   Group Member 2 (name & SID): Oak Soe Oo 21228215
   
