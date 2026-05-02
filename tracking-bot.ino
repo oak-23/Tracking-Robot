@@ -271,10 +271,9 @@ void checkTurn(){
         break;
       case 3:
       digitalWrite(debugPin, HIGH);
-        TIMEOUT = 0;
         speed = 160;
-        time = 150;
-        time_1 = 550;
+        time = 200;
+        time_1 = 350;
         turn(LEFT);
         time = 250;
         time_1 = 250;
@@ -290,8 +289,6 @@ void checkTurn(){
        turn(SPIN);
       
         speed = 200;
-        
-        
         break;
       case 6:
         time = 350;
