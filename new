@@ -53,7 +53,7 @@ int forward_delay_B = 150;
 int time = 150;
 int time_1 = 150;
 
-int turnCounter = 0;
+int turnCounter = 6;
 bool run = 0; 
 int count = 0;
 
@@ -68,6 +68,7 @@ long sensor_timeout = 10;
 
 //turn timeout
 long last_turn_time = 0;
+long last_turn_time0 = 0;
 
 void setup ()
 {
@@ -126,11 +127,6 @@ void loop() {
   else if ( bumperSensor && countBumper == 1) 
   { 
       if ( !leftSensor && !rightSensor) {
-      
-        analogWrite(pinL_PWM, speed);
-        analogWrite(pinR_PWM, speed);
-        digitalWrite(pinL_DIR, 0);
-        digitalWrite(pinR_DIR, 1);
         run = true;
         checkTurn(); 
 
@@ -179,13 +175,13 @@ void loop() {
 
 void turn(int direction) {
   if (direction == LEFT || direction == RIGHT) {
-    analogWrite(pinL_PWM, speed * 65);
-    analogWrite(pinR_PWM, speed * 65);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, direction);
     digitalWrite(pinR_DIR, !direction); 
     delay(time);  
-    analogWrite(pinL_PWM, speed * 65);
-    analogWrite(pinR_PWM, speed * 65);
+    analogWrite(pinL_PWM, speed);
+    analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
     delay(time_1);  
@@ -200,7 +196,7 @@ void turn(int direction) {
     analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
-    delay(100);
+    delay(300);
 
     // long last_quarter = millis();
     // long spin_timeout = 50;
@@ -271,23 +267,22 @@ void checkTurn(){
       case 2:
       speed = 140;
         turn(RIGHT);
-        speed = 200;
+        speed = 160;
         break;
       case 3:
       digitalWrite(debugPin, HIGH);
         TIMEOUT = 0;
-        speed = 160;
+        speed = 140;
         time = 50;
         time_1 = 400;
         turn(LEFT);
         time = 150;
         time_1 = 150;
-        speed = 140;
+        speed = 160;
         break;
       
       case 4:
         turn(LEFT);
-        speed = 200;
         break;
     
       case 5:
@@ -299,34 +294,39 @@ void checkTurn(){
         
         break;
       case 6:
+        time = 350;
+        time_1 = 150;
+        forward(200,50);
         turn(LEFTB);
-        speed = 160;
-        time = 150;
-        time_1 = 200;
+        speed = 120;
+        time = 140;
+        time_1 = 140;
         last_turn_time = millis();
         break;
       case 7 :
-        if ((millis() - last_turn_time) < 450){
-          if (count == 0) {
-            turnCounter -= 1; 
-            count += 1;
-            turn(LEFTB);
-            return;
-          }
+        if (((millis() - last_turn_time) < 450) && count == 0){
+          turnCounter -= 1; 
+          count += 1;
+          turn(LEFT);
+          return;
         }
         turn(RIGHT);
-        speed = 140;
+        speed = 110;
         break;
-      case 8:
-        turn(LEFT);
-        break;
+       case 8:
+      turn(LEFT);
+
+      break;
       case 9:
         turn(RIGHT);
+
         break;
-      case 10:
-        turn(LEFT); //get off zig zag
-        speed = 200;
+        
+      case(10):
+        turn(LEFT);
+
         break;
+      
       // case 11:
       //  speed = 160;
       //   turn(RIGHT);
