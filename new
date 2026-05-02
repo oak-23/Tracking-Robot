@@ -46,14 +46,14 @@ const int LEFTB = 4;
 const int RIGHTB = 5;
 
 // Speed
-int speed = 230;
+int speed = 200;
 int spin_speed = 180;
 int sharp_turn_speed = 250;
 int forward_delay_B = 150;
 int time = 150;
 int time_1 = 150;
 
-int turnCounter = 6;
+int turnCounter = 0;
 bool run = 0; 
 int count = 0;
 
@@ -162,10 +162,10 @@ void loop() {
   }
   else if (countBumper == 2) {
     analogWrite(pinL_PWM, speed);
-    analogWrite(pinR_PWM, speed);
+    analogWrite(pinR_PWM, speed * 0.8);
     digitalWrite(pinL_DIR, 0);
     digitalWrite(pinR_DIR, 0);
-    delay(1300);
+    delay(1100);
     analogWrite(pinL_PWM, 0);
     analogWrite(pinR_PWM, 0);
   }
@@ -260,9 +260,9 @@ void checkTurn(){
   if (run == true){
     switch(turnCounter){
       case 1:
-      speed = 140;
+        speed = 140;
         turn(LEFT);
-        speed = 200;
+        speed = 180;
         break;
       case 2:
       speed = 140;
@@ -272,12 +272,12 @@ void checkTurn(){
       case 3:
       digitalWrite(debugPin, HIGH);
         TIMEOUT = 0;
-        speed = 140;
-        time = 50;
+        speed = 160;
+        time = 150;
         time_1 = 400;
         turn(LEFT);
-        time = 150;
-        time_1 = 150;
+        time = 250;
+        time_1 = 250;
         speed = 160;
         break;
       
@@ -298,33 +298,43 @@ void checkTurn(){
         time_1 = 150;
         forward(200,50);
         turn(LEFTB);
-        speed = 120;
-        time = 140;
-        time_1 = 140;
+        speed = 115;
+        time = 150;
+        time_1 = 150;
         last_turn_time = millis();
         break;
       case 7 :
-        if (((millis() - last_turn_time) < 450) && count == 0){
+        if (((millis() - last_turn_time) < 500) && count == 0){
           turnCounter -= 1; 
           count += 1;
-          turn(LEFT);
+          turn(LEFTB);
           return;
         }
         turn(RIGHT);
-        speed = 110;
+        speed = 115;
         break;
-       case 8:
-      turn(LEFT);
-
-      break;
+      case 8:
+        turn(LEFT);
+        speed = 180;
+        break;
       case 9:
         turn(RIGHT);
-
         break;
-        
-      case(10):
+      case 10:
         turn(LEFT);
-
+        speed = 170;
+        break;
+      case 11:
+        turn(LEFT);
+        break;
+      case 12:
+        turn(LEFT);
+        break;
+      case 13:
+        turn(LEFT);
+        break;
+      case 14:
+        turn(LEFTB);
         break;
       
       // case 11:
