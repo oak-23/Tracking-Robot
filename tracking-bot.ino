@@ -46,20 +46,29 @@ const int LEFTB = 4;
 const int RIGHTB = 5;
 
 // Speed
-int speed = 175;
-int spin_speed = 175;
-int sharp_turn_speed = 350;
-int forward_delay_B = 250;
+int speed = 200;
+int spin_speed = 180;
+int sharp_turn_speed = 250;
+int forward_delay_B = 150;
 int time = 150;
 int time_1 = 150;
 
 int turnCounter = 0;
 bool run = 0; 
+int count = 0;
+
+// dynamic turning
+int triggers = 0;
+long spin_start_time = millis();
+long sensor_timeout = 10;
+
+
 // the setup function runs once when you press reset or power the board
 
 
 //turn timeout
 long last_turn_time = 0;
+long last_turn_time0 = 0;
 
 void setup ()
 {
@@ -118,11 +127,6 @@ void loop() {
   else if ( bumperSensor && countBumper == 1) 
   { 
       if ( !leftSensor && !rightSensor) {
-      
-        analogWrite(pinL_PWM, speed);
-        analogWrite(pinR_PWM, speed);
-        digitalWrite(pinL_DIR, 0);
-        digitalWrite(pinR_DIR, 1);
         run = true;
         checkTurn(); 
 
@@ -157,11 +161,11 @@ void loop() {
     countBumper = countBumper + 1;
   }
   else if (countBumper == 2) {
-    analogWrite(pinL_PWM, speed);
+    analogWrite(pinL_PWM, speed * 0.8);
     analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 0);
     digitalWrite(pinR_DIR, 0);
-    delay(1300);
+    delay(1200);
     analogWrite(pinL_PWM, 0);
     analogWrite(pinR_PWM, 0);
   }
@@ -187,12 +191,30 @@ void turn(int direction) {
     analogWrite(pinR_PWM, spin_speed);
     digitalWrite(pinL_DIR, 0);
     digitalWrite(pinR_DIR, 1);
-    delay(1400);
+    delay(1300);
     analogWrite(pinL_PWM, speed);
     analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
     digitalWrite(pinR_DIR, 1); 
-    delay(100);
+    delay(300);
+
+    // long last_quarter = millis();
+    // long spin_timeout = 50;
+
+    // while(triggers < 4){
+    //       analogWrite(pinL_PWM, spin_speed);
+    //       analogWrite(pinR_PWM, spin_speed);
+    //       digitalWrite(pinL_DIR, 0);
+    //       digitalWrite(pinR_DIR, 1);
+    //       delay(60);
+
+    //       leftSensor = digitalRead(pinL_Sensor);
+    
+    //       if (!leftSensor && ((millis()-last_quarter)>spin_timeout)){
+    //         last_quarter = millis();
+    //         triggers++;
+    //       }
+              
   }else if (direction == LEFTB ) {
     analogWrite(pinL_PWM, speed);
     analogWrite(pinR_PWM, speed);
@@ -238,48 +260,106 @@ void checkTurn(){
   if (run == true){
     switch(turnCounter){
       case 1:
+        speed = 140;
         turn(LEFT);
-        speed = 200;
+        speed = 180;
         break;
       case 2:
+      speed = 140;
         turn(RIGHT);
-        speed = 150;
+        speed = 160;
         break;
       case 3:
-        TIMEOUT = 500;
+      digitalWrite(debugPin, HIGH);
+        TIMEOUT = 0;
+        speed = 160;
+        time = 150;
+        time_1 = 550;
         turn(LEFT);
-        speed = 140;
+        time = 250;
+        time_1 = 250;
+        speed = 160;
         break;
+      
       case 4:
         turn(LEFT);
         break;
+    
       case 5:
-        if ((millis() - last_turn_time) < 1400){
-          turnCounter -= 1; 
-          checkTurn();
-          return;
-        }
-        turn(SPIN);
-        speed = 150;
-        TIMEOUT = 0;
+        // turn(SPIN);
+       turn(SPIN);
+      
+        speed = 200;
+        
+        
         break;
       case 6:
+        time = 350;
+        time_1 = 150;
+        forward(200,50);
         turn(LEFTB);
-        speed = 120;
+        speed = 115;
+        time = 100;
+        time_1 = 100;
+        last_turn_time = millis();
         break;
-      case 7:
-        turn(LEFTB);
+      case 7 :
+        if (((millis() - last_turn_time) < 500) && count == 0){
+          turnCounter -= 1; 
+          count += 1;
+          turn(LEFTB);
+          return;
+        }
+        turn(RIGHT);
+        speed = 115;
         break;
       case 8:
-        turn(RIGHTB);
-        TIMEOUT = 200;
+        turn(LEFT);
         break;
       case 9:
-        turn(RIGHTB); //
+        turn(LEFT);
+        speed = 180;
         break;
       case 10:
+        turn(LEFT);
+        break;
+      case 11:
+        turn(RIGHT);
+        break;
+      case 12:
+        turn(LEFT);
+        speed = 170;
+        break;
+      case 13:
+        turn(LEFT);
+        break;
+      case 14:
+        turn(LEFT);
+        break;
+      case 15:
+        turn(LEFT);
+        break;
+      case 16:
+        turn(LEFTB);
+        break;
+      case 17:
+        turn(LEFT);
+        break;
+      
+      // case 11:
+      //  speed = 160;
+      //   turn(RIGHT);
+      //   speed = 200;
+      //   break;
+      // case 12:
+      //   speed = 160;
+      //   turn(LEFT);
+      //   speed = 200;
+      //   break;
+      /*
+      case 10:
         sharp_turn_speed = 350;
-        turn(LEFTB); //
+        turn(LEFTb); //
         break;
       case 11:
         turn(LEFTB);
@@ -319,12 +399,12 @@ void checkTurn(){
         break;
       case 21:
         turn(LEFTB);
-        break;
+        break; */
       default:
+      speed = 0;
         break;
     }
   }
-  last_turn_time = millis();
   turnCounter++;
   return;
 }
