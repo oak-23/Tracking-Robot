@@ -166,7 +166,7 @@ void loop() {
     analogWrite(pinR_PWM, speed*0.9);
     digitalWrite(pinL_DIR, 0);
     digitalWrite(pinR_DIR, 0);
-    delay(1000);
+    delay(1100);
     analogWrite(pinL_PWM, 0);
     analogWrite(pinR_PWM, 0);
   }
@@ -192,7 +192,7 @@ void turn(int direction) {
     analogWrite(pinR_PWM, spin_speed);
     digitalWrite(pinL_DIR, 0);
     digitalWrite(pinR_DIR, 1);
-    delay(1300);
+    delay(1200);
     analogWrite(pinL_PWM, speed);
     analogWrite(pinR_PWM, speed);
     digitalWrite(pinL_DIR, 1);
@@ -275,9 +275,9 @@ void checkTurn(){
         speed = 160;
         time = 200;
         time_1 = 250;
-        turn(LEFT);
-        time = 250;
-        time_1 = 250;
+        forward(160, 300);
+        time = 150;
+        time_1 = 150;
         speed = 160;
         break;
       
@@ -317,22 +317,21 @@ void checkTurn(){
         break;
       case 9:
         turn(LEFT);
-        speed = 140;
+        speed = 150;
         break;
       case 10:
         turn(RIGHT);
-        speed = 190;
+        speed = 170;
         break;
       case 11:
         turn(LEFT);
-        speed = 200;
+        speed = 170;
         break;
       case 12:
         turn(LEFT);
         break;
       case 13:
         turn(LEFT);
-        speed = 200;
         break;
       case 14:
         turn(LEFT);
