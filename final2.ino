@@ -316,7 +316,7 @@ void checkTurn(){
         break;
       case 9:
         turn(LEFT);
-        speed = 150;
+        speed = 140;
         break;
       case 10:
         turn(LEFTB);
@@ -334,7 +334,7 @@ void checkTurn(){
         break;
       case 14:
         turn(LEFT);
-        speed = 200;
+        speed = 190;
         break;
       case 15:
         turn(LEFT);
