@@ -268,7 +268,7 @@ void checkTurn(){
       case 2:
       speed = 140;
         turn(RIGHT);
-        speed = 150;
+        speed = 140;
         break;
       case 3:
       digitalWrite(debugPin, HIGH);
@@ -296,7 +296,7 @@ void checkTurn(){
         time_1 = 150;
         forward(200,50);
         turn(LEFTB);
-        speed = 170;
+        speed = 150;
         time = 100;
         time_1 = 100;
         last_turn_time = millis();
@@ -312,20 +312,20 @@ void checkTurn(){
         speed = 160;
         break;
       case 8:
-        turn(LEFT);
-        speed = 170;
+        turn(LEFTB);
+        speed = 140;
         break;
       case 9:
         turn(LEFT);
         speed = 150;
         break;
       case 10:
-        turn(RIGHT);
+        turn(RIGHTB);
         speed = 170;
         break;
       case 11:
         turn(LEFT);
-        speed = 170;
+        speed = 190;
         break;
       case 12:
         turn(LEFT);
@@ -337,7 +337,7 @@ void checkTurn(){
         turn(LEFT);
         break;
         case 15:
-        turn(LEFTB);
+        turn(LEFT);
         break;
         case 16:
         turn(LEFTB);
